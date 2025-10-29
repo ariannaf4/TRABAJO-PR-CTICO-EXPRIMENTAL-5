@@ -2,7 +2,7 @@ services:
   # MongoDB
   mongodb:
     image: mongo:7.0
-    container_name: crud-mongodb
+    container_name: crud_mongodb
     environment:
       MONGO_INITDB_DATABASE: crud_db
     ports:
@@ -22,7 +22,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: crud-backend
+    container_name: crud_backend
     environment:
       PORT: ${PORT}
       MONGODB_URI: ${MONGODB_URI}
@@ -45,7 +45,7 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    container_name: crud-frontend
+    container_name: crud_frontend
     environment:
       - REACT_APP_API_URL=${REACT_APP_API_URL}
     ports:

@@ -1,5 +1,7 @@
 # Variables de entorno
 .env
+.env.example
+
 
 # Dependencias Node.js
 node_modules/
