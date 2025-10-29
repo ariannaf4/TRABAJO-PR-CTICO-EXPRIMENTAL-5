@@ -21,14 +21,11 @@ router.post('/signup', async (req, res) => {
       return res.status(400).json({ message: 'Usuario o email ya existe' });
     }
 
-    // Hash de la contraseña
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Crear usuario en MongoDB
+    // Crear usuario en MongoDB - CONTRASEÑA EN TEXTO PLANO
     const user = new User({
       username,
       email,
-      password: hashedPassword,
+      password, // Sin hash - texto plano
     });
     await user.save();
 
@@ -70,8 +67,15 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ message: 'Credenciales inválidas' });
     }
 
-    // Verificar contraseña
-    const isValidPassword = await bcrypt.compare(password, user.password);
+    // Verificar que el usuario tenga contraseña (no sea OAuth)
+    if (!user.password) {
+      return res.status(400).json({ 
+        message: 'Este usuario fue registrado con Google OAuth. Use el botón de Google para iniciar sesión.' 
+      });
+    }
+
+    // Verificar contraseña - TEXTO PLANO
+    const isValidPassword = (password === user.password);
     if (!isValidPassword) {
       return res.status(400).json({ message: 'Credenciales inválidas' });
     }
